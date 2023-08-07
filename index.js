@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const CLI = require('./CLI.js');
+const mysql = require('mysql2');
 
 const viewQuestions = [
   {
@@ -21,17 +22,89 @@ const viewQuestions = [
 const newDeptQuestions = [
   {
     name: "department",
-    message: "Type the name of a new department you want to add: "
+    message: "Name new department: "
+  }
+];
+
+const newRoleQuestions = [
+  {
+    name: "role",
+    message: "Title of new role:"
+  },
+  {
+    name: "salary",
+    message: "New role's salary"
+  },
+  {
+    type: "list",
+    name: "enterDept",
+    message: "New role's department: ",
+    choices: ["Marketing",
+    "Finance",
+    "Human Resources",
+    "Production",
+    "Development"],
+    loop: false,
+  }
+];
+
+const newEmployeeQuestions = [
+  {
+    name: "firstName",
+    message: "Employee's First Name: ",
+  },
+  {
+    name: "lastName",
+    message: "Employee's Last Name: "
+  },
+  {
+    type: "list",
+    name: "employeeRole",
+    message: "New employee's role: ",
+    choices: [
+      "Senior Staff",
+      "Staff"
+    ]
+  },
+  {
+    type: "list",
+    name: "employeeManager",
+    message: "New employee's manager: ",
+    choices: [1, 2, 3, 4]
+  }
+];
+
+const updateEmployee = [
+  {
+    type: "list",
+    name: "employee",
+    message: "Select an employee to update: ",
+    choices: [
+      "Lucas Young",
+      "Ryan Downer",
+      "Samantha Grilling"
+    ]
+  },
+  {
+    name: "employeeID",
+    message: "Employee's ID: "
+  },
+  {
+    type: "list",
+    name: "updates",
+    message: "Employee's new role: ",
+    choices: [
+      "Senior Staff",
+      "Staff"
+    ]
   }
 ]
-
-
 
 const db = mysql.createConnection(
   {
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'h2UBx562yPD7(N4',
     database: 'company_db'
   },
   console.log(`Connected to the company_db database.`)
@@ -56,16 +129,25 @@ inquirer
       inquirer 
         .prompt(newDeptQuestions).then(function(response){
           cli.addDepartment(response);
-        })
+        });
     } else if (response.mainOptions === "Add a Role"){
       console.log("Adding a role");
-      cli.addRole();
+      inquirer 
+        .prompt(newRoleQuestions).then(function(response){
+          cli.addRole(response);
+        });
     } else if (response.mainOptions === "Add an Employee"){
       console.log("Adding an Employee");
-      cli.addEmployeee();
+      inquirer 
+        .prompt(newEmployeeQuestions).then(function(response){
+          cli.addEmployee(response);
+        });
     } else if (response.mainOptions === "Update an Employee Role"){
       console.log("Updating an employee")
-      cli.updateEmployee();
+      inquirer
+        .prompt(updateEmployee).then(function(response){
+          cli.updateEmployee(response);
+        })
     } else {
       console.log("Thank you for using the Employee Tracker")
       return;
