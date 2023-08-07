@@ -1,51 +1,82 @@
-const inquirer = require('inquirer');
+const mysql = require('mysql2');
 
-const viewQuestions = [
-  {
-    type: "list",
-    name: "mainOptions",
-    message: "What would you like to do?",
-    choices: ["View all Departments",
-    "View all Roles",
-    "View all Employees",
-    "Add a Department", 
-    "Add a Role",
-    "Add an Employee",
-    "Update an Employee Role",
-    "Quit"],
-    loop: false,
+
+class CLI {
+  constructor(db, init) {
+    this.db = db;
+    this.init = init;
   }
-]
+// }
+  viewDepartment(){
+    this.db.query(`SELECT * FROM department;`, (err, result) => {
+      if (err) {
+        console.log("Error", err)
+      }
+      console.table(results);
+      this.init();
+    })
 
-function menuOptions() {
-inquirer
-  .prompt(viewQuestions).then(function(response){
-    if (response.mainOptions === "View all Departments") {
-      console.log("here are the departments!")
-      menuOptions();
-    } else if (response.mainOptions === "View all Roles"){
-      console.log("here are all the roles!");
-      menuOptions();
-    } else if (response.mainOptions === "View all Employees"){
-      console.log("View all Employees");
-      menuOptions();
-    } else if (response.mainOptions ===  "Add a Department"){
-      console.log("Adding a department");
-      menuOptions();
-    } else if (response.mainOptions === "Add a Role"){
-      console.log("Adding a role");
-      menuOptions();
-    } else if (response.mainOptions === "Add an Employee"){
-      console.log("Adding an Employee");
-      menuOptions();
-    } else if (response.mainOptions === "Update an Employee Role"){
-      console.log("Updating an employee")
-      menuOptions();
-    } else {
-      console.log("Thank you for using the Employee Tracker")
-      return;
-    }
-  })
+  }
+
+ 
+
+
+// class Department {
+//   constructor(name) {
+//     this.name = name;
+//   }
+
+  addDepartment(newDept) {
+    this.db.query(`INSERT INTO department (dept_name) VALUES ('${newDept.department}')`, (err, result) => {
+      if (err) {
+        console.log("Error", err)
+      }
+      console.table(results);
+      this.init();
+    })
+
+  };
+
+  removeDepartment() {
+
+  }
+// }
+
+// class Role {
+//   constructor(title, salary, deptID){
+//     this.title = title;
+//     this.salary = salary;
+//     this.dept_ID = deptID;
+//   }
+
+  addRole() {
+
+  };
+
+  removeRole() {
+
+  }
+// }
+
+// class Employee {
+//   constructor(firstName, lastName, roleID, managerID){
+//     this.firstName = firstName;
+//     this.lastName = lastName;
+//     this.roleID = roleID;
+//     this.managerID = managerID;
+//   }
+
+  addEmployee() {
+
+  };
+
+  updateEmployeeRole() {
+
+  }
+
+  removeEmployee() {
+
+  }
 }
 
-menuOptions();
+module.exports = CLI;
