@@ -1,5 +1,6 @@
-const { up } = require('inquirer/lib/utils/readline');
 const mysql = require('mysql2');
+
+const departments = []
 
 // CLI class holds all of the necessary functions to make mysql queries
 class CLI {
@@ -32,7 +33,6 @@ class CLI {
 
   viewRoles(){
     this.db.query(
-      // `SELECT id, title, salary FROM roles
       `SELECT roles.id, roles.title AS Role, roles.salary AS Salary, departments.dept_name AS Department 
       FROM roles 
       RIGHT JOIN departments 
@@ -61,10 +61,11 @@ class CLI {
 
   viewEmployees(){
     this.db.query(
-      `SELECT employees.id, employees.first_name AS 'First Name', employees.last_name AS 'Last Name', roles.title AS Role, employees.manager_id 
+      `SELECT employees.id, employees.first_name AS 'First Name', employees.last_name AS 'Last Name', roles.title AS Role, roles.salary AS Salary, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager 
       FROM employees 
       RIGHT JOIN roles 
       ON employees.role_id = roles.id
+      LEFT JOIN employees Manager ON manager.id = employees.manager_id
       WHERE employees.id IS NOT NULL;`, (err, result) => {
       if (err) {
         console.log("Error", err)
@@ -73,11 +74,6 @@ class CLI {
       this.init();
     });
   }
-
-  // `SELECT employees.id, employees.first_name, employees.manager_id, x.id, x.first_name
-  // FROM employees, x
-  // WHERE employees.manager_id = x.id;`
-
 
   addEmployee(newEmployee) {
     this.db.query(

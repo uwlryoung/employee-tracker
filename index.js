@@ -2,7 +2,45 @@ const inquirer = require('inquirer');
 const CLI = require('./CLI.js');
 const mysql = require('mysql2');
 
-// const departments = [];
+// const departments = addDeptObj();
+
+const departments = [
+  {
+    id: 1,
+    department: "Marketing"
+  }, 
+  {
+    id: 2,
+    department: "Finance"
+  },
+  {
+    id: 3,
+    department: "Human Resources"
+  },
+  {
+    id: 4,
+    department: "Production"
+  }
+];
+
+const roleChoices = departments.map(obj => ({
+  name: `${obj.department}`,
+  value: `${obj.id}`
+}));
+
+// function deptConvert (departments) {
+//   const deptObject = [];
+//   for (let i = 0; i < departments.length; i++) {
+//     deptObject.push(departments[i].department)
+//   }
+//   return deptObject;
+// };
+
+// const roleChoices = departments.map(obj => ({
+//   name: `${obj.department}`,
+//   value: obj
+// }));
+
 // const roles = [];
 
 const viewQuestions = [
@@ -42,7 +80,10 @@ const newRoleQuestions = [
     type: "list",
     name: "enterDept",
     message: "New role's department: ",
-    choices: [1, 2, 3, 4, 5, 6, 7],
+    // choices: addDeptObj(),
+    // choices: [1,2,3,4,5,6],
+    choices: roleChoices,
+    // choices: deptConvert(departments),
     loop: false,
   }
 ];
@@ -144,6 +185,27 @@ inquirer
   })
 }
 
+// function addDeptObj() {
+//   db.query(`SELECT * FROM departments;`, (err, result) => {
+//     if (err) {
+//       console.log("Error, err")
+//     }
+
+//     const departments = result.map(obj = ({
+//       id: `${obj.id}`,
+//       dept_name: `${obj.dept_name}`
+//     }))
+    
+//     return departments;
+//   })
+// };
+
+// const roleChoices = departments.map(obj => ({
+//   name: `${obj.department}`,
+//   value: obj
+// }));
+
 const cli = new CLI(db, menuOptions);
 
+// addDeptObj();
 menuOptions();
