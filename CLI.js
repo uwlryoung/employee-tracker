@@ -7,8 +7,10 @@ class CLI {
     this.db = db;
     this.init = init;
   }
+
   viewDepartment(){
-    this.db.query(`SELECT * FROM department;`, (err, result) => {
+    this.db.query(
+      `SELECT id, dept_name AS Departments FROM departments;`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
@@ -18,21 +20,24 @@ class CLI {
   }
 
   addDepartment(newDept) {
-    this.db.query(`INSERT INTO department (dept_name) VALUES ('${newDept.department}')`, (err, result) => {
+    this.db.query(`INSERT INTO departments (dept_name) VALUES ('${newDept.department}')`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
-      console.table(result);
-      this.init();
+      this.viewDepartment();
     })
   };
 
-  removeDepartment() {
-
-  }
+  removeDepartment() {}
 
   viewRoles(){
-    this.db.query(`SELECT * FROM roles;`, (err, result) => {
+    this.db.query(
+      // `SELECT id, title, salary FROM roles
+      `SELECT roles.id, roles.title AS Role, roles.salary AS Salary, departments.dept_name AS Department 
+      FROM roles 
+      RIGHT JOIN departments 
+      ON roles.department_id = departments.id
+      WHERE roles.id IS NOT NULL;`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
@@ -42,21 +47,25 @@ class CLI {
   }
 
   addRole(newRole) {
-    this.db.query(`INSERT INTO department (dept_name) VALUES ('${newRole.department}')`, (err, result) => {
+    this.db.query(
+      `INSERT INTO roles (title, salary, department_id) 
+      VALUES ('${newRole.role}',${newRole.salary},${newRole.enterDept})`, (err, result) => {
       if (err) {
         console.log("Error", err)
-      }
-      console.table(result);
-      this.init();
+      } 
+      this.viewRoles();
     })
   };
 
-  removeRole() {
-
-  }
+  removeRole() {}
 
   viewEmployees(){
-    this.db.query(`SELECT * FROM employees;`, (err, result) => {
+    this.db.query(
+      `SELECT employees.id, employees.first_name AS 'First Name', employees.last_name AS 'Last Name', roles.title AS Role, employees.manager_id 
+      FROM employees 
+      RIGHT JOIN roles 
+      ON employees.role_id = roles.id
+      WHERE employees.id IS NOT NULL;`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
@@ -65,14 +74,19 @@ class CLI {
     });
   }
 
+  // `SELECT employees.id, employees.first_name, employees.manager_id, x.id, x.first_name
+  // FROM employees, x
+  // WHERE employees.manager_id = x.id;`
+
+
   addEmployee(newEmployee) {
-    this.db.query(`INSERT INTO employees (first_name, last_name, role_id, manager_id) 
-                  VALUES ('${newEmployee.firstName}','${newEmployee.lastName}','${newEmployee.employeeRole}','${newEmployee.employeeManager}')`, (err, result) => {
+    this.db.query(
+      `INSERT INTO employees (first_name, last_name, role_id, manager_id) 
+      VALUES ('${newEmployee.firstName}','${newEmployee.lastName}',${newEmployee.employeeRole},${newEmployee.employeeManager})`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
-      console.table(result);
-      this.init();
+      this.viewEmployees();
     })
   };
 
@@ -83,37 +97,10 @@ class CLI {
       }
       console.table(result);
       this.init();
-    }
-
-
+    });
   };
 
-  removeEmployee() {
-
-  }
+  removeEmployee() {}
 }
 
 module.exports = CLI;
-
-
-
-// class Employee {
-//   constructor(firstName, lastName, roleID, managerID){
-//     this.firstName = firstName;
-//     this.lastName = lastName;
-//     this.roleID = roleID;
-//     this.managerID = managerID;
-//   }
-
-
-// class Role {
-//   constructor(title, salary, deptID){
-//     this.title = title;
-//     this.salary = salary;
-//     this.dept_ID = deptID;
-//   }
-
-// class Department {
-//   constructor(name) {
-//     this.name = name;
-//   }

@@ -3,7 +3,7 @@ CREATE DATABASE company_db;
 
 USE company_db;
 
-CREATE TABLE department (
+CREATE TABLE departments (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   dept_name VARCHAR(30)
 );
@@ -14,7 +14,7 @@ CREATE TABLE roles (
   salary DECIMAL(15,2),
   department_id INT,
   FOREIGN KEY (department_id)
-  REFERENCES department(id)
+  REFERENCES departments(id)
   ON DELETE SET NULL
 );
 
@@ -28,6 +28,6 @@ CREATE TABLE employees (
   REFERENCES roles(id)
   ON DELETE SET NULL,
   FOREIGN KEY (manager_id)
-  REFERENCES employee(id)
+  REFERENCES employees(id)
   ON DELETE SET NULL
 );

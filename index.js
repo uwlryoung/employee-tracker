@@ -2,6 +2,9 @@ const inquirer = require('inquirer');
 const CLI = require('./CLI.js');
 const mysql = require('mysql2');
 
+// const departments = [];
+// const roles = [];
+
 const viewQuestions = [
   {
     type: "list",
@@ -22,7 +25,7 @@ const viewQuestions = [
 const newDeptQuestions = [
   {
     name: "department",
-    message: "Name new department: "
+    message: "Name of new department: "
   }
 ];
 
@@ -39,11 +42,7 @@ const newRoleQuestions = [
     type: "list",
     name: "enterDept",
     message: "New role's department: ",
-    choices: ["Marketing",
-    "Finance",
-    "Human Resources",
-    "Production",
-    "Development"],
+    choices: [1, 2, 3, 4, 5, 6, 7],
     loop: false,
   }
 ];
@@ -61,10 +60,7 @@ const newEmployeeQuestions = [
     type: "list",
     name: "employeeRole",
     message: "New employee's role: ",
-    choices: [
-      "Senior Staff",
-      "Staff"
-    ]
+    choices: [1,2,3,4,5]
   },
   {
     type: "list",
@@ -116,41 +112,34 @@ function menuOptions() {
 inquirer
   .prompt(viewQuestions).then(function(response){
     if (response.mainOptions === "View all Departments") {
-      console.log("here are the departments!")
       cli.viewDepartment();
     } else if (response.mainOptions === "View all Roles"){
-      console.log("here are all the roles!");
       cli.viewRoles();
     } else if (response.mainOptions === "View all Employees"){
-      console.log("View all Employees");
       cli.viewEmployees();
     } else if (response.mainOptions ===  "Add a Department"){
-      console.log("Adding a department");
       inquirer 
         .prompt(newDeptQuestions).then(function(response){
           cli.addDepartment(response);
         });
     } else if (response.mainOptions === "Add a Role"){
-      console.log("Adding a role");
       inquirer 
         .prompt(newRoleQuestions).then(function(response){
           cli.addRole(response);
         });
     } else if (response.mainOptions === "Add an Employee"){
-      console.log("Adding an Employee");
       inquirer 
         .prompt(newEmployeeQuestions).then(function(response){
           cli.addEmployee(response);
         });
     } else if (response.mainOptions === "Update an Employee Role"){
-      console.log("Updating an employee")
       inquirer
         .prompt(updateEmployee).then(function(response){
           cli.updateEmployee(response);
         })
     } else {
       console.log("Thank you for using the Employee Tracker")
-      return;
+      process.exit();
     }
   })
 }
