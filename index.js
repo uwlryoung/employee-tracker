@@ -18,7 +18,7 @@ const viewQuestions = [
   {
     type: "list",
     name: "mainOptions",
-    message: "What would you like to do?",
+    message: "\x1b[32mWhat would you like to do?\x1b[0m",
     choices: ["View all Departments",
     "View all Roles",
     "View all Employees",
@@ -128,10 +128,25 @@ inquirer
           cli.updateEmployee(response);
         })
     } else {
-      console.log("\nThank you for using the Employee Tracker!\n");
+      console.log("\n\x1b[32mThank you for using the Employee Tracker!\x1b[0m\n");
       process.exit();
     }
   })
 }
 
+function welcome(){
+  console.log(
+    `\x1b[32m
+    ╭━━━╮╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭━━━━╮╱╱╱╱╱╱╭╮
+    ┃╭━━╯╱╱╱╱╱┃┃╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃╭╮╭╮┃╱╱╱╱╱╱┃┃
+    ┃╰━━┳╮╭┳━━┫┃╭━━┳╮╱╭┳━━┳━━╮╰╯┃┃┣┻┳━━┳━━┫┃╭┳━━┳━╮
+    ┃╭━━┫╰╯┃╭╮┃┃┃╭╮┃┃╱┃┃┃━┫┃━┫╱╱┃┃┃╭┫╭╮┃╭━┫╰╯┫┃━┫╭╯
+    ┃╰━━┫┃┃┃╰╯┃╰┫╰╯┃╰━╯┃┃━┫┃━┫╱╱┃┃┃┃┃╭╮┃╰━┫╭╮┫┃━┫┃
+    ╰━━━┻┻┻┫╭━┻━┻━━┻━╮╭┻━━┻━━╯╱╱╰╯╰╯╰╯╰┻━━┻╯╰┻━━┻╯
+    ╱╱╱╱╱╱╱┃┃╱╱╱╱╱╱╭━╯┃
+    ╱╱╱╱╱╱╱╰╯╱╱╱╱╱╱╰━━╯ \x1b[0m \n`
+  )
+}
+
+welcome();
 menuOptions();

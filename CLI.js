@@ -39,7 +39,9 @@ class CLI {
       if (err) {
         console.log("Error", err)
       }
-      console.log(`\nSuccessfully added ${newDept.department} to Departments! \nSelect "View All Departments" to view it.\n`);
+      console.log(`
+      \x1b[32mSuccessfully added \x1b[34m${newDept.department}\x1b[0m \x1b[32mto Departments! 
+      Select "View All Departments" to view it.\x1b[0m\n`);
       this.init();
     })
   };
@@ -79,7 +81,9 @@ class CLI {
       if (err) {
         console.log("Error", err)
       } 
-      console.log(`\nSuccessfully added ${newRole.role} to Roles! \nSelect "View All Roles" to view it.\n`);
+      console.log(`
+      \x1b[32mSuccessfully added \x1b[34m${newRole.role}\x1b[0m \x1b[32mto Roles!
+      Select "View All Roles" to view it.\x1b[0m\n`);
       this.init();
     })
   };
@@ -131,7 +135,9 @@ class CLI {
       if (err) {
         console.log("Error", err)
       }
-      console.log(`\nSuccessfully added ${newEmployee.firstName} ${newEmployee.lastName} as a new employee! \nSelect "View All Employees" to view them.\n`);
+      console.log(`
+    \x1b[32mSuccessfully added \x1b[34m${newEmployee.firstName} ${newEmployee.lastName}\x1b[0m \x1b[32mas a new employee!
+    Select "View All Employees" to view them.\x1b[0m\n`);
       this.init();
     })
   };
@@ -142,12 +148,12 @@ class CLI {
       if (err) {
         console.log("Error", err)
       }
-      console.log(`\nSuccessfully updated the employee's role! \nSelect "View All Employees" to view their new role.\n`);
+      console.log(`
+    \x1b[32mSuccessfully updated the employee's role!
+    Select "View All Employees" to view their new role.\x1b[0m\n`);
       this.init();
     });
   };
-
-  removeEmployee() {}
 }
 
 module.exports = CLI;
