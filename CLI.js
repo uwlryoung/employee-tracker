@@ -1,7 +1,5 @@
 const mysql = require('mysql2');
 
-// const departments = []
-
 // CLI class holds all of the necessary functions to make mysql queries
 class CLI {
   constructor(db, init) {
@@ -9,7 +7,7 @@ class CLI {
     this.init = init;
   }
 
-  getDepartment(){
+  getDepartments(){
     return this.db.promise().query(
       `SELECT id, dept_name AS Departments FROM departments;`).then((result) => {
       const departments = result[0].map(obj => ({
@@ -18,6 +16,40 @@ class CLI {
       }))
       return departments;
     })
+  }
+
+  getRoles(){
+    return this.db.promise().query(
+      `SELECT id, title as Roles FROM roles;`).then((result) => {
+        const roles = result[0].map(obj => ({
+          name: obj.Roles,
+          value: obj.id
+        }))
+        return roles;
+      })
+  }
+
+  getManagers(){
+    return this.db.promise().query(
+      `SELECT id, CONCAT(first_name, ' ', last_name) AS Managers, manager_id FROM employees
+      WHERE manager_id IS NULL;`). then((result) => {
+        const managers = result[0].map(obj => ({
+          name: obj.Managers,
+          value: obj.id
+        }))
+        return managers;
+      })
+  }
+
+  getEmployees(){
+    return this.db.promise().query(
+      `SELECT id, CONCAT(first_name, ' ', last_name) AS Employees, role_id FROM employees`).then((result) => {
+        const employees = result[0].map(obj => ({
+          name: obj.Employees,
+          value: obj.id
+        }))
+        return employees;
+      })
   }
 
   viewDepartment(){
@@ -99,7 +131,9 @@ class CLI {
   };
 
   updateEmployee(updates) {
-    this.db.query(`UPDATE employees SET role_id = ${updates.role_id},WHERE id = ${updates.employeeID};`, (err, result) => {
+    console.log(updates);
+    this.db.query(`UPDATE employees SET role_id = ${updates.newRole} 
+    WHERE id = ${updates.employee};`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }

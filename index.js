@@ -2,8 +2,6 @@ const inquirer = require('inquirer');
 const CLI = require('./CLI.js');
 const mysql = require('mysql2');
 
-// const departments = addDeptObj();
-
 const db = mysql.createConnection(
   {
     host: 'localhost',
@@ -15,68 +13,6 @@ const db = mysql.createConnection(
 );
 
 const cli = new CLI(db, menuOptions);
-
-// const roleChoices = function (db, callback){
-//   db.query(`SELECT * FROM departments`, (err, request) => {
-//     if (err){
-//       console.log("Error", err);
-//       callback([]);
-//     } else {
-//       const choices = request.map(obj => ({
-//         name: `${obj.department}`,
-//         value: `${obj.id}`
-//       }));
-//       callback(choices);
-//     }
-//   });
-// };
-
-
-// function test (){
-//   db.query(
-//   'SELECT * FROM departments',
-//   function(err, results, fields) {
-//     const departments = results;
-//     console.log(results); // results contains rows returned by server
-//     console.log(fields); // fields contains extra meta data about results, if available
-//     return departments.map(obj => ({
-//         name: `${obj.department}`,
-//         value: `${obj.id}`
-//       }))
-//   }
-// );
-// }
-
-// const roleChoices = function (db){
-//   const departments = db.query(`SELECT * FROM departments`, (err, request) => {
-//     if (err){
-//       console.log("Error", err)
-//     }
-//     // return request;
-//   });
-//   console.log("this is departments" + departments)
-//   return departments.map(obj => ({
-//     name: `${obj.department}`,
-//     value: `${obj.id}`
-//   }))
-// };
-
-// let departments = [];
-
-
-// function deptConvert (departments) {
-//   const deptObject = [];
-//   for (let i = 0; i < departments.length; i++) {
-//     deptObject.push(departments[i].department)
-//   }
-//   return deptObject;
-// };
-
-// function roleChoices() {
-//   return cli.getDepartment();
-// };
-
-// const roles = [];
 
 const viewQuestions = [
   {
@@ -115,11 +51,7 @@ const newRoleQuestions = [
     type: "list",
     name: "enterDept",
     message: "New role's department: ",
-    // choices: addDeptObj(),
-    // choices: [1,2,3,4,5,6],
-    choices: () => cli.getDepartment(),
-    // choices: roleChoices(db),
-    // choices: deptConvert(departments),
+    choices: () => cli.getDepartments(),
     loop: false,
   }
 ];
@@ -137,13 +69,15 @@ const newEmployeeQuestions = [
     type: "list",
     name: "employeeRole",
     message: "New employee's role: ",
-    choices: [1,2,3,4,5]
+    choices: () => cli.getRoles(),
+    loop: false
   },
   {
     type: "list",
     name: "employeeManager",
     message: "New employee's manager: ",
-    choices: [1, 2, 3, 4]
+    choices: () => cli.getManagers(),
+    loop: false
   }
 ];
 
@@ -152,28 +86,17 @@ const updateEmployee = [
     type: "list",
     name: "employee",
     message: "Select an employee to update: ",
-    choices: [
-      "Lucas Young",
-      "Ryan Downer",
-      "Samantha Grilling"
-    ]
-  },
-  {
-    name: "employeeID",
-    message: "Employee's ID: "
+    choices: () => cli.getEmployees(),
+    loop: false
   },
   {
     type: "list",
-    name: "updates",
+    name: "newRole",
     message: "Employee's new role: ",
-    choices: [
-      "Senior Staff",
-      "Staff"
-    ]
+    choices: () => cli.getRoles(),
+    loop: false
   }
 ]
-
-// Look into switch-case 
 
 function menuOptions() {
 inquirer
@@ -211,27 +134,4 @@ inquirer
   })
 }
 
-// function addDeptObj() {
-//   db.query(`SELECT * FROM departments;`, (err, result) => {
-//     if (err) {
-//       console.log("Error, err")
-//     }
-
-//     const departments = result.map(obj = ({
-//       id: `${obj.id}`,
-//       dept_name: `${obj.dept_name}`
-//     }))
-    
-//     return departments;
-//   })
-// };
-
-// const roleChoices = departments.map(obj => ({
-//   name: `${obj.department}`,
-//   value: obj
-// }));
-
-// const cli = new CLI(db, menuOptions);
-
-// addDeptObj();
 menuOptions();
