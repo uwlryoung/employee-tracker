@@ -4,29 +4,65 @@ const mysql = require('mysql2');
 
 // const departments = addDeptObj();
 
-const departments = [
+const db = mysql.createConnection(
   {
-    id: 1,
-    department: "Marketing"
-  }, 
-  {
-    id: 2,
-    department: "Finance"
+    host: 'localhost',
+    user: 'root',
+    password: 'h2UBx562yPD7(N4',
+    database: 'company_db'
   },
-  {
-    id: 3,
-    department: "Human Resources"
-  },
-  {
-    id: 4,
-    department: "Production"
-  }
-];
+  console.log(`Connected to the company_db database.`)
+);
 
-const roleChoices = departments.map(obj => ({
-  name: `${obj.department}`,
-  value: `${obj.id}`
-}));
+const cli = new CLI(db, menuOptions);
+
+// const roleChoices = function (db, callback){
+//   db.query(`SELECT * FROM departments`, (err, request) => {
+//     if (err){
+//       console.log("Error", err);
+//       callback([]);
+//     } else {
+//       const choices = request.map(obj => ({
+//         name: `${obj.department}`,
+//         value: `${obj.id}`
+//       }));
+//       callback(choices);
+//     }
+//   });
+// };
+
+
+// function test (){
+//   db.query(
+//   'SELECT * FROM departments',
+//   function(err, results, fields) {
+//     const departments = results;
+//     console.log(results); // results contains rows returned by server
+//     console.log(fields); // fields contains extra meta data about results, if available
+//     return departments.map(obj => ({
+//         name: `${obj.department}`,
+//         value: `${obj.id}`
+//       }))
+//   }
+// );
+// }
+
+// const roleChoices = function (db){
+//   const departments = db.query(`SELECT * FROM departments`, (err, request) => {
+//     if (err){
+//       console.log("Error", err)
+//     }
+//     // return request;
+//   });
+//   console.log("this is departments" + departments)
+//   return departments.map(obj => ({
+//     name: `${obj.department}`,
+//     value: `${obj.id}`
+//   }))
+// };
+
+// let departments = [];
+
 
 // function deptConvert (departments) {
 //   const deptObject = [];
@@ -36,10 +72,9 @@ const roleChoices = departments.map(obj => ({
 //   return deptObject;
 // };
 
-// const roleChoices = departments.map(obj => ({
-//   name: `${obj.department}`,
-//   value: obj
-// }));
+// function roleChoices() {
+//   return cli.getDepartment();
+// };
 
 // const roles = [];
 
@@ -82,7 +117,8 @@ const newRoleQuestions = [
     message: "New role's department: ",
     // choices: addDeptObj(),
     // choices: [1,2,3,4,5,6],
-    choices: roleChoices,
+    choices: () => cli.getDepartment(),
+    // choices: roleChoices(db),
     // choices: deptConvert(departments),
     loop: false,
   }
@@ -136,16 +172,6 @@ const updateEmployee = [
     ]
   }
 ]
-
-const db = mysql.createConnection(
-  {
-    host: 'localhost',
-    user: 'root',
-    password: 'h2UBx562yPD7(N4',
-    database: 'company_db'
-  },
-  console.log(`Connected to the company_db database.`)
-);
 
 // Look into switch-case 
 
@@ -205,7 +231,7 @@ inquirer
 //   value: obj
 // }));
 
-const cli = new CLI(db, menuOptions);
+// const cli = new CLI(db, menuOptions);
 
 // addDeptObj();
 menuOptions();

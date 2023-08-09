@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 
-const departments = []
+// const departments = []
 
 // CLI class holds all of the necessary functions to make mysql queries
 class CLI {
@@ -9,12 +9,24 @@ class CLI {
     this.init = init;
   }
 
+  getDepartment(){
+    return this.db.promise().query(
+      `SELECT id, dept_name AS Departments FROM departments;`).then((result) => {
+      const departments = result[0].map(obj => ({
+        name: obj.Departments,
+        value: obj.id
+      }))
+      return departments;
+    })
+  }
+
   viewDepartment(){
-    this.db.query(
+   this.db.query(
       `SELECT id, dept_name AS Departments FROM departments;`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
+      // departments.push(result);
       console.table(result);
       this.init();
     });
