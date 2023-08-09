@@ -128,7 +128,7 @@ inquirer
           cli.updateEmployee(response);
         })
     } else {
-      console.log("Thank you for using the Employee Tracker")
+      console.log("\nThank you for using the Employee Tracker!\n");
       process.exit();
     }
   })

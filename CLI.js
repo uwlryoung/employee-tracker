@@ -7,6 +7,10 @@ class CLI {
     this.init = init;
   }
 
+  //Department Related Functions
+    // Differences between the "getDepartments" and "viewDepartments" is that get functions are used to
+    // return the values so that the terminal will display the list of departments. This is the same for
+    // the other get functions, "getRoles", "getManagers", "getEmployees"
   getDepartments(){
     return this.db.promise().query(
       `SELECT id, dept_name AS Departments FROM departments;`).then((result) => {
@@ -18,6 +22,30 @@ class CLI {
     })
   }
 
+  viewDepartment(){
+    this.db.query(
+       `SELECT id, dept_name AS Departments FROM departments;`, (err, result) => {
+       if (err) {
+         console.log("Error", err)
+       }
+       // departments.push(result);
+       console.table(result);
+       this.init();
+     });
+   }
+
+   addDepartment(newDept) {
+    this.db.query(`INSERT INTO departments (dept_name) VALUES ('${newDept.department}')`, (err, result) => {
+      if (err) {
+        console.log("Error", err)
+      }
+      console.log(`\nSuccessfully added ${newDept.department} to Departments! \nSelect "View All Departments" to view it.\n`);
+      this.init();
+    })
+  };
+
+  // Roles related functions
+
   getRoles(){
     return this.db.promise().query(
       `SELECT id, title as Roles FROM roles;`).then((result) => {
@@ -28,52 +56,6 @@ class CLI {
         return roles;
       })
   }
-
-  getManagers(){
-    return this.db.promise().query(
-      `SELECT id, CONCAT(first_name, ' ', last_name) AS Managers, manager_id FROM employees
-      WHERE manager_id IS NULL;`). then((result) => {
-        const managers = result[0].map(obj => ({
-          name: obj.Managers,
-          value: obj.id
-        }))
-        return managers;
-      })
-  }
-
-  getEmployees(){
-    return this.db.promise().query(
-      `SELECT id, CONCAT(first_name, ' ', last_name) AS Employees, role_id FROM employees`).then((result) => {
-        const employees = result[0].map(obj => ({
-          name: obj.Employees,
-          value: obj.id
-        }))
-        return employees;
-      })
-  }
-
-  viewDepartment(){
-   this.db.query(
-      `SELECT id, dept_name AS Departments FROM departments;`, (err, result) => {
-      if (err) {
-        console.log("Error", err)
-      }
-      // departments.push(result);
-      console.table(result);
-      this.init();
-    });
-  }
-
-  addDepartment(newDept) {
-    this.db.query(`INSERT INTO departments (dept_name) VALUES ('${newDept.department}')`, (err, result) => {
-      if (err) {
-        console.log("Error", err)
-      }
-      this.viewDepartment();
-    })
-  };
-
-  removeDepartment() {}
 
   viewRoles(){
     this.db.query(
@@ -97,11 +79,34 @@ class CLI {
       if (err) {
         console.log("Error", err)
       } 
-      this.viewRoles();
+      console.log(`\nSuccessfully added ${newRole.role} to Roles! \nSelect "View All Roles" to view it.\n`);
+      this.init();
     })
   };
 
-  removeRole() {}
+  // Employees Related Functions
+  getManagers(){
+    return this.db.promise().query(
+      `SELECT id, CONCAT(first_name, ' ', last_name) AS Managers, manager_id FROM employees
+      WHERE manager_id IS NULL;`). then((result) => {
+        const managers = result[0].map(obj => ({
+          name: obj.Managers,
+          value: obj.id
+        }))
+        return managers;
+      })
+  }
+
+  getEmployees(){
+    return this.db.promise().query(
+      `SELECT id, CONCAT(first_name, ' ', last_name) AS Employees, role_id FROM employees`).then((result) => {
+        const employees = result[0].map(obj => ({
+          name: obj.Employees,
+          value: obj.id
+        }))
+        return employees;
+      })
+  }
 
   viewEmployees(){
     this.db.query(
@@ -126,18 +131,18 @@ class CLI {
       if (err) {
         console.log("Error", err)
       }
-      this.viewEmployees();
+      console.log(`\nSuccessfully added ${newEmployee.firstName} ${newEmployee.lastName} as a new employee! \nSelect "View All Employees" to view them.\n`);
+      this.init();
     })
   };
 
   updateEmployee(updates) {
-    console.log(updates);
     this.db.query(`UPDATE employees SET role_id = ${updates.newRole} 
     WHERE id = ${updates.employee};`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
-      console.table(result);
+      console.log(`\nSuccessfully updated the employee's role! \nSelect "View All Employees" to view their new role.\n`);
       this.init();
     });
   };
