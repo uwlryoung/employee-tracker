@@ -127,10 +127,11 @@ class CLI {
 
   viewEmployees(){
     this.db.query(
-      `SELECT employees.id, employees.first_name AS 'First Name', employees.last_name AS 'Last Name', roles.title AS Role, roles.salary AS Salary, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager 
+      `SELECT employees.id, employees.first_name AS 'First Name', employees.last_name AS 'Last Name', departments.dept_name AS Department, roles.title AS Role, roles.salary AS Salary, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager 
       FROM employees 
-      RIGHT JOIN roles 
+      LEFT JOIN roles 
       ON employees.role_id = roles.id
+      LEFT JOIN Departments ON roles.department_id = departments.id
       LEFT JOIN employees Manager ON manager.id = employees.manager_id
       WHERE employees.id IS NOT NULL
       ORDER BY employees.id;`, (err, result) => {

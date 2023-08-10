@@ -24,15 +24,15 @@ VALUES
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES
-  ('Bezalel','Simmel',4,NULL),
+  ('Bezalel','Simmel',1,NULL),
   ('Parto','Bamford',2,NULL),
-  ('Chirstian','Koblick',1,NULL),
-  ('Kyoichi','Maliniak',6,NULL),
-  ('Anneke','Preusig',1,1),
-  ('Tzvetan','Zielin',2,2),
-  ('Saniya','Kalloufi',3,3),
-  ('Sumant','Peac',4,4),
-  ('Duangkaew','Piveteau',5,1),
+  ('Chirstian','Koblick',3,NULL),
+  ('Kyoichi','Maliniak',4,NULL),
+  ('Anneke','Preusig',5,1),
+  ('Tzvetan','Zielin',6,2),
+  ('Saniya','Kalloufi',7,3),
+  ('Sumant','Peac',8,4),
+  ('Duangkaew','Piveteau',9,1),
   ('Mary','Sluis',6,1),
   ('Patricio','Bridgland',7,2),
   ('Eberhardt','Terkki',8,2),
