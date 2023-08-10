@@ -35,12 +35,12 @@ class CLI {
    }
 
    addDepartment(newDept) {
-    this.db.query(`INSERT INTO departments (dept_name) VALUES ('${newDept.department}')`, (err, result) => {
+    this.db.query(`INSERT INTO departments (dept_name) VALUES ('${newDept.department.trim()}')`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
       console.log(`
-      \x1b[32mSuccessfully added \x1b[34m${newDept.department}\x1b[0m \x1b[32mto Departments! 
+      \x1b[32mSuccessfully added \x1b[34m${newDept.department.trim()}\x1b[0m \x1b[32mto Departments! 
       Select "View Departments" to view it.\x1b[0m\n`);
       this.init();
     })
@@ -89,12 +89,12 @@ class CLI {
   addRole(newRole) {
     this.db.query(
       `INSERT INTO roles (title, salary, department_id) 
-      VALUES ('${newRole.role}',${newRole.salary},${newRole.enterDept})`, (err, result) => {
+      VALUES ('${newRole.role.trim()}',${newRole.salary.trim()},${newRole.enterDept})`, (err, result) => {
       if (err) {
         console.log("Error", err)
       } 
       console.log(`
-      \x1b[32mSuccessfully added \x1b[34m${newRole.role}\x1b[0m \x1b[32mto Roles!
+      \x1b[32mSuccessfully added \x1b[34m${newRole.role.trim()}\x1b[0m \x1b[32mto Roles!
       Select "View All Roles" to view it.\x1b[0m\n`);
       this.init();
     })
@@ -146,12 +146,12 @@ class CLI {
   addEmployee(newEmployee) {
     this.db.query(
       `INSERT INTO employees (first_name, last_name, role_id, manager_id) 
-      VALUES ('${newEmployee.firstName}','${newEmployee.lastName}',${newEmployee.employeeRole},${newEmployee.employeeManager})`, (err, result) => {
+      VALUES ('${newEmployee.firstName.trim()}','${newEmployee.lastName.trim()}',${newEmployee.employeeRole},${newEmployee.employeeManager})`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
       console.log(`
-    \x1b[32mSuccessfully added \x1b[34m${newEmployee.firstName} ${newEmployee.lastName}\x1b[0m \x1b[32mas a new employee!
+    \x1b[32mSuccessfully added \x1b[34m${newEmployee.firstName.trim()} ${newEmployee.lastName.trim()}\x1b[0m \x1b[32mas a new employee!
     Select "View Employees" to view them.\x1b[0m\n`);
       this.init();
     })
@@ -215,12 +215,12 @@ class CLI {
   addManager(newManager) {
     this.db.query(
       `INSERT INTO employees (first_name, last_name, role_id, manager_id) 
-      VALUES ('${newManager.firstName}','${newManager.lastName}',${newManager.employeeRole},NULL)`, (err, result) => {
+      VALUES ('${newManager.firstName.trim()}','${newManager.lastName.trim()}',${newManager.employeeRole},NULL)`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
       console.log(`
-    \x1b[32mSuccessfully added \x1b[34m${newManager.firstName} ${newManager.lastName}\x1b[0m \x1b[32mas a new manager!
+    \x1b[32mSuccessfully added \x1b[34m${newManager.firstName.trim()} ${newManager.lastName.trim()}\x1b[0m \x1b[32mas a new manager!
     Select "View Managers" to view them. You can also view them by selecting "View Employees".\x1b[0m\n`);
       this.init();
     })

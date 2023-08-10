@@ -23,11 +23,11 @@ const viewQuestions = [
     "View Roles",
     "View Managers",
     "View Employees",
-    "Add a Department", 
-    "Add a Role",
-    "Add a Manager",
-    "Add an Employee",
-    "Update an Employee Role",
+    "Add Department", 
+    "Add Role",
+    "Add Manager",
+    "Add Employee",
+    "Update Employee Role",
     "Delete Department",
     "Delete Role",
     "Delete Employee",
@@ -162,27 +162,27 @@ inquirer
       cli.viewManagers();  
     } else if (response.mainOptions === "View Employees"){
       cli.viewEmployees();
-    } else if (response.mainOptions ===  "Add a Department"){
+    } else if (response.mainOptions ===  "Add Department"){
       inquirer 
         .prompt(newDeptQuestions).then(function(response){
           cli.addDepartment(response);
         });
-    } else if (response.mainOptions === "Add a Role"){
+    } else if (response.mainOptions === "Add Role"){
       inquirer 
         .prompt(newRoleQuestions).then(function(response){
           cli.addRole(response);
         });
-    } else if (response.mainOptions === "Add a Manager"){
+    } else if (response.mainOptions === "Add Manager"){
       inquirer
         .prompt(newManagerQuestions).then(function(response){
           cli.addManager(response);
         });
-    } else if (response.mainOptions === "Add an Employee"){
+    } else if (response.mainOptions === "Add Employee"){
       inquirer 
         .prompt(newEmployeeQuestions).then(function(response){
           cli.addEmployee(response);
         });
-    } else if (response.mainOptions === "Update an Employee Role"){
+    } else if (response.mainOptions === "Update Employee Role"){
       inquirer
         .prompt(updateEmployee).then(function(response){
           cli.updateEmployee(response);
