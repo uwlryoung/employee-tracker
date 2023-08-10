@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const CLI = require('./CLI.js');
 const mysql = require('mysql2');
 
+// Connects database to mysql
 const db = mysql.createConnection(
   {
     host: 'localhost',
@@ -12,8 +13,11 @@ const db = mysql.createConnection(
   console.log(`Connected to the company_db database.`)
 );
 
+// a CLI class constructor that holds all the db.queries. See CLI.js.
 const cli = new CLI(db, menuOptions);
 
+// Questions required for the menu and adding/deleting information from the database.
+// Skip to Line 157 to get past the questions
 const viewQuestions = [
   {
     type: "list",
@@ -151,6 +155,7 @@ const deleteEmployee = [
   },
 ];
 
+// The main menu function that lists all of the program's functions
 function menuOptions() {
 inquirer
   .prompt(viewQuestions).then(function(response){
@@ -209,6 +214,7 @@ inquirer
   })
 }
 
+// The Welcome Screen function
 function welcome(){
   console.log(
     `\x1b[32m
@@ -223,5 +229,6 @@ function welcome(){
   )
 }
 
+// Calling the Functions to start the program
 welcome();
 menuOptions();

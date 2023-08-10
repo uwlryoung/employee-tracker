@@ -10,12 +10,12 @@ class CLI {
   //Department Related Functions
     // Differences between the "getDepartments" and "viewDepartments" is that get functions are used to
     // return the values so that the terminal will display the list of departments. This is the same for
-    // the other get functions, "getRoles", "getManagers", "getEmployees"
+    // the other get functions, "getRoles", "getManagers", "getEmployees" vs "viewRoles", etc.
   getDepartments(){
     return this.db.promise().query(
-      `SELECT id, dept_name AS Departments FROM departments ORDER BY dept_name;`).then((result) => {
+      `SELECT id, dept_name AS Department FROM departments ORDER BY dept_name;`).then((result) => {
       const departments = result[0].map(obj => ({
-        name: obj.Departments,
+        name: obj.Department,
         value: obj.id
       }))
       return departments;
@@ -24,11 +24,10 @@ class CLI {
 
   viewDepartment(){
     this.db.query(
-       `SELECT id, dept_name AS Departments FROM departments;`, (err, result) => {
+       `SELECT id, dept_name AS Department FROM departments;`, (err, result) => {
        if (err) {
          console.log("Error", err)
        }
-       // departments.push(result);
        console.table(result);
        this.init();
      });
@@ -113,7 +112,7 @@ class CLI {
     )
   };
 
-  // Employees Related Functions
+  // Employee Related Functions
   getEmployees(){
     return this.db.promise().query(
       `SELECT id, CONCAT(first_name, ' ', last_name) AS Employees, role_id FROM employees ORDER BY Employees`).then((result) => {
