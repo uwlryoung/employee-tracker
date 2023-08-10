@@ -13,7 +13,7 @@ class CLI {
     // the other get functions, "getRoles", "getManagers", "getEmployees"
   getDepartments(){
     return this.db.promise().query(
-      `SELECT id, dept_name AS Departments FROM departments;`).then((result) => {
+      `SELECT id, dept_name AS Departments FROM departments ORDER BY dept_name;`).then((result) => {
       const departments = result[0].map(obj => ({
         name: obj.Departments,
         value: obj.id
@@ -41,16 +41,28 @@ class CLI {
       }
       console.log(`
       \x1b[32mSuccessfully added \x1b[34m${newDept.department}\x1b[0m \x1b[32mto Departments! 
-      Select "View All Departments" to view it.\x1b[0m\n`);
+      Select "View Departments" to view it.\x1b[0m\n`);
       this.init();
     })
   };
 
-  // Roles related functions
+  removeDepartment(department){
+    this.db.query(
+      `DELETE FROM departments WHERE id = ${department.department}`, (err, result) => {
+        if (err) {
+          console.log("Error", err)
+        }
+      console.log(`
+      \x1b[32mSuccessfully deleted department!\x1b[0m\n`)
+      this.init();
+      }
+    )
+  };
 
+  // Role related functions
   getRoles(){
     return this.db.promise().query(
-      `SELECT id, title as Roles FROM roles;`).then((result) => {
+      `SELECT id, title as Roles FROM roles ORDER BY Roles;`).then((result) => {
         const roles = result[0].map(obj => ({
           name: obj.Roles,
           value: obj.id
@@ -88,10 +100,23 @@ class CLI {
     })
   };
 
+  removeRole(role){
+    this.db.query(
+      `DELETE FROM roles WHERE id = ${role.role}`, (err, result) => {
+        if (err) {
+          console.log("Error", err)
+        }
+      console.log(`
+      \x1b[32mSuccessfully deleted role!\x1b[0m\n`)
+      this.init();
+      }
+    )
+  };
+
   // Employees Related Functions
-    getEmployees(){
+  getEmployees(){
     return this.db.promise().query(
-      `SELECT id, CONCAT(first_name, ' ', last_name) AS Employees, role_id FROM employees`).then((result) => {
+      `SELECT id, CONCAT(first_name, ' ', last_name) AS Employees, role_id FROM employees ORDER BY Employees`).then((result) => {
         const employees = result[0].map(obj => ({
           name: obj.Employees,
           value: obj.id
@@ -126,7 +151,7 @@ class CLI {
       }
       console.log(`
     \x1b[32mSuccessfully added \x1b[34m${newEmployee.firstName} ${newEmployee.lastName}\x1b[0m \x1b[32mas a new employee!
-    Select "View All Employees" to view them.\x1b[0m\n`);
+    Select "View Employees" to view them.\x1b[0m\n`);
       this.init();
     })
   };
@@ -139,9 +164,22 @@ class CLI {
       }
       console.log(`
     \x1b[32mSuccessfully updated the employee's role!
-    Select "View All Employees" to view their new role.\x1b[0m\n`);
+    Select "View Employees" to view their new role.\x1b[0m\n`);
       this.init();
     });
+  };
+
+  removeEmployee(employee){
+    this.db.query(
+      `DELETE FROM employees WHERE id = ${employee.employee}`, (err, result) => {
+        if (err) {
+          console.log("Error", err)
+        }
+      console.log(`
+      \x1b[32mSuccessfully removed employee!\x1b[0m\n`)
+      this.init();
+      }
+    )
   };
 
   // Manager Related Functions
@@ -182,7 +220,7 @@ class CLI {
       }
       console.log(`
     \x1b[32mSuccessfully added \x1b[34m${newManager.firstName} ${newManager.lastName}\x1b[0m \x1b[32mas a new manager!
-    Select "View All Managers" to view them. You can also view them by selecting "View All Employees".\x1b[0m\n`);
+    Select "View Managers" to view them. You can also view them by selecting "View Employees".\x1b[0m\n`);
       this.init();
     })
   };

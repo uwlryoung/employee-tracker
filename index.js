@@ -19,15 +19,18 @@ const viewQuestions = [
     type: "list",
     name: "mainOptions",
     message: "\x1b[32mWhat would you like to do?\x1b[0m",
-    choices: ["View all Departments",
-    "View all Roles",
-    "View all Managers",
-    "View all Employees",
+    choices: ["View Departments",
+    "View Roles",
+    "View Managers",
+    "View Employees",
     "Add a Department", 
     "Add a Role",
     "Add a Manager",
     "Add an Employee",
     "Update an Employee Role",
+    "Delete Department",
+    "Delete Role",
+    "Delete Employee",
     "Quit"],
     loop: false,
   }
@@ -116,18 +119,48 @@ const updateEmployee = [
     choices: () => cli.getRoles(),
     loop: false
   }
-]
+];
+
+const deleteDepartment = [
+  {
+    type: "list",
+    name: "department",
+    message: "Which department do you want to delete? ",
+    choices: () => cli.getDepartments(),
+    loop: false
+  },
+];
+
+const deleteRole = [
+  {
+    type: "list",
+    name: "role",
+    message: "Which role do you want to delete? ",
+    choices: () => cli.getRoles(),
+    loop: false
+  },
+];
+
+const deleteEmployee = [
+  {
+    type: "list",
+    name: "employee",
+    message: "Which employee do you want to remove? ",
+    choices: () => cli.getEmployees(),
+    loop: false
+  },
+];
 
 function menuOptions() {
 inquirer
   .prompt(viewQuestions).then(function(response){
-    if (response.mainOptions === "View all Departments") {
+    if (response.mainOptions === "View Departments") {
       cli.viewDepartment();
-    } else if (response.mainOptions === "View all Roles"){
+    } else if (response.mainOptions === "View Roles"){
       cli.viewRoles();
-    } else if (response.mainOptions === "View all Managers"){
+    } else if (response.mainOptions === "View Managers"){
       cli.viewManagers();  
-    } else if (response.mainOptions === "View all Employees"){
+    } else if (response.mainOptions === "View Employees"){
       cli.viewEmployees();
     } else if (response.mainOptions ===  "Add a Department"){
       inquirer 
@@ -154,7 +187,22 @@ inquirer
         .prompt(updateEmployee).then(function(response){
           cli.updateEmployee(response);
         });
-    } else {
+    } else if (response.mainOptions === "Delete Department") {
+      inquirer
+        .prompt(deleteDepartment).then(function(response){
+          cli.removeDepartment(response);
+        });
+    } else if (response.mainOptions === "Delete Role") {
+      inquirer
+        .prompt(deleteRole).then(function(response){
+          cli.removeRole(response);
+        });
+    } else if (response.mainOptions === "Delete Employee") {
+      inquirer
+        .prompt(deleteEmployee).then(function(response){
+          cli.removeEmployee(response);
+        });
+    } else {      
       console.log("\n\x1b[32mThank you for using the Employee Tracker!\x1b[0m\n");
       process.exit();
     }
