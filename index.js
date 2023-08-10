@@ -21,9 +21,11 @@ const viewQuestions = [
     message: "\x1b[32mWhat would you like to do?\x1b[0m",
     choices: ["View all Departments",
     "View all Roles",
+    "View all Managers",
     "View all Employees",
     "Add a Department", 
     "Add a Role",
+    "Add a Manager",
     "Add an Employee",
     "Update an Employee Role",
     "Quit"],
@@ -81,6 +83,24 @@ const newEmployeeQuestions = [
   }
 ];
 
+const newManagerQuestions = [
+  {
+    name: "firstName",
+    message: "Managers's First Name: ",
+  },
+  {
+    name: "lastName",
+    message: "Manager's Last Name: "
+  },
+  {
+    type: "list",
+    name: "employeeRole",
+    message: "New manager's role: ",
+    choices: () => cli.getRoles(),
+    loop: false
+  }
+];
+
 const updateEmployee = [
   {
     type: "list",
@@ -105,6 +125,8 @@ inquirer
       cli.viewDepartment();
     } else if (response.mainOptions === "View all Roles"){
       cli.viewRoles();
+    } else if (response.mainOptions === "View all Managers"){
+      cli.viewManagers();  
     } else if (response.mainOptions === "View all Employees"){
       cli.viewEmployees();
     } else if (response.mainOptions ===  "Add a Department"){
@@ -117,6 +139,11 @@ inquirer
         .prompt(newRoleQuestions).then(function(response){
           cli.addRole(response);
         });
+    } else if (response.mainOptions === "Add a Manager"){
+      inquirer
+        .prompt(newManagerQuestions).then(function(response){
+          cli.addManager(response);
+        });
     } else if (response.mainOptions === "Add an Employee"){
       inquirer 
         .prompt(newEmployeeQuestions).then(function(response){
@@ -126,7 +153,7 @@ inquirer
       inquirer
         .prompt(updateEmployee).then(function(response){
           cli.updateEmployee(response);
-        })
+        });
     } else {
       console.log("\n\x1b[32mThank you for using the Employee Tracker!\x1b[0m\n");
       process.exit();

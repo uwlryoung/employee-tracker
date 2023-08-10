@@ -89,19 +89,7 @@ class CLI {
   };
 
   // Employees Related Functions
-  getManagers(){
-    return this.db.promise().query(
-      `SELECT id, CONCAT(first_name, ' ', last_name) AS Managers, manager_id FROM employees
-      WHERE manager_id IS NULL;`). then((result) => {
-        const managers = result[0].map(obj => ({
-          name: obj.Managers,
-          value: obj.id
-        }))
-        return managers;
-      })
-  }
-
-  getEmployees(){
+    getEmployees(){
     return this.db.promise().query(
       `SELECT id, CONCAT(first_name, ' ', last_name) AS Employees, role_id FROM employees`).then((result) => {
         const employees = result[0].map(obj => ({
@@ -119,7 +107,8 @@ class CLI {
       RIGHT JOIN roles 
       ON employees.role_id = roles.id
       LEFT JOIN employees Manager ON manager.id = employees.manager_id
-      WHERE employees.id IS NOT NULL;`, (err, result) => {
+      WHERE employees.id IS NOT NULL
+      ORDER BY employees.id;`, (err, result) => {
       if (err) {
         console.log("Error", err)
       }
@@ -154,6 +143,50 @@ class CLI {
       this.init();
     });
   };
+
+  // Manager Related Functions
+  getManagers(){
+    return this.db.promise().query(
+      `SELECT id, CONCAT(first_name, ' ', last_name) AS Managers, manager_id FROM employees
+      WHERE manager_id IS NULL;`). then((result) => {
+        const managers = result[0].map(obj => ({
+          name: obj.Managers,
+          value: obj.id
+        }))
+        return managers;
+      })
+  }
+
+  viewManagers(){
+    this.db.query(
+      `SELECT employees.id, employees.first_name AS 'First Name', employees.last_name AS 'Last Name', roles.title AS Role, roles.salary AS Salary 
+      FROM employees 
+      RIGHT JOIN roles 
+      ON employees.role_id = roles.id
+      WHERE manager_id IS NULL
+      ORDER BY employees.id;`, (err, result) => {
+      if (err) {
+        console.log("Error", err)
+      }
+      console.table(result);
+      this.init();
+    });
+  };
+
+  addManager(newManager) {
+    this.db.query(
+      `INSERT INTO employees (first_name, last_name, role_id, manager_id) 
+      VALUES ('${newManager.firstName}','${newManager.lastName}',${newManager.employeeRole},NULL)`, (err, result) => {
+      if (err) {
+        console.log("Error", err)
+      }
+      console.log(`
+    \x1b[32mSuccessfully added \x1b[34m${newManager.firstName} ${newManager.lastName}\x1b[0m \x1b[32mas a new manager!
+    Select "View All Managers" to view them. You can also view them by selecting "View All Employees".\x1b[0m\n`);
+      this.init();
+    })
+  };
+
 }
 
 module.exports = CLI;
