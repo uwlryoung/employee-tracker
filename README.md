@@ -45,7 +45,7 @@
 ![View Managers](/assets/images/viewManagers.png)
 
 ### Video Demonstration
-See our video demonstration that explains how to use the program and showcases all of its features. 
+See our [video demonstration](https://drive.google.com/file/d/1gvdNY_xRrEytN1A-3CzLRWqgRgisyPqo/view?usp=sharing) that explains how to use the program and showcases all of its features. 
 ## Credits
 N/A
 
